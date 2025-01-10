@@ -3,6 +3,7 @@ import { FaRegHeart, FaHeart } from "react-icons/fa";
 import axios from "axios";
 import swal from "sweetalert";
 import "./VideoCard.css";
+import API_ENDPOINTS from "../../config";
 
 const Likes = ({ videoId, onLikeToggle }) => {
   const [likeCount, setLikeCount] = useState(0);
@@ -16,13 +17,12 @@ const Likes = ({ videoId, onLikeToggle }) => {
     const fetchLikeCount = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/likes/${videoId}/likers`
+          `${API_ENDPOINTS.fetchLikeCount}${videoId}/likers`
+          // `http://localhost:5000/api/likes/${videoId}/likers`
         );
         setLikeUser(response.data.likes);
         setLikeCount(response.data.likes.length);
       } catch (error) {
-        // console.error("Error fetching like count:", error);
-        // console.log("user not found")
       }
     };
 
@@ -43,7 +43,8 @@ const Likes = ({ videoId, onLikeToggle }) => {
     }
 
     const token = JSON.parse(localStorage.getItem("token"));
-    const url = `http://localhost:5000/api/likes/${videoId}`;
+    const url = `${API_ENDPOINTS.likeVideoToggle}${videoId}`;
+    // const url = `http://localhost:5000/api/likes/${videoId}`;
     const headers = {
       Authorization: `Bearer ${token}`,
     };
@@ -69,7 +70,7 @@ const Likes = ({ videoId, onLikeToggle }) => {
 
       // Refresh like data after toggle
       const response = await axios.get(
-        `http://localhost:5000/api/likes/${videoId}/likers`
+        `${API_ENDPOINTS.fetchLikeCount}${videoId}/likers`
       );
       setLikeUser(response.data.likes);
       setLikeCount(response.data.likes.length);

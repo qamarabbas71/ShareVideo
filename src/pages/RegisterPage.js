@@ -4,6 +4,7 @@ import * as Yup from "yup";
 import { Container, Button, Row, Col, Card } from "react-bootstrap";
 import { Link, useNavigate } from 'react-router-dom';
 import axios from "axios";
+import API_ENDPOINTS from "../config";
 import "react-toastify/dist/ReactToastify.css";
 
 const RegisterPage = () => {
@@ -31,7 +32,8 @@ const RegisterPage = () => {
       
       console.log(values);
       const response = await axios.post(
-        "http://localhost:5000/api/users/register",
+        API_ENDPOINTS.register,
+        // "http://localhost:5000/api/users/register",
         {
           username: values.username,
           email: values.email,

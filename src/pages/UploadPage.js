@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { Container, Row, Col, Button, Card } from 'react-bootstrap';
+import API_ENDPOINTS from '../config';
 import axios from 'axios';
 
 const UploadPage = () => {
@@ -50,7 +51,8 @@ const UploadPage = () => {
 
     try {
       const token = JSON.parse(localStorage.getItem('token'));
-      const response = await axios.post('http://localhost:5000/api/videos/upload', formData, {
+      const response = await axios.post(API_ENDPOINTS.uploadVideo, formData, {
+        // const response = await axios.post('http://localhost:5000/api/videos/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${token}`, 

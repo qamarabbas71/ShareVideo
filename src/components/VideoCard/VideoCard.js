@@ -5,6 +5,7 @@ import Comments from "./Comments";
 import { UserContext } from "../../context/userContext.js";
 import "./VideoCard.css";
 import getVideos from "./api";
+import API_ENDPOINTS from "../../config.js";
 
 const VideoCard = () => {
   const { user } = useContext(UserContext);
@@ -12,6 +13,7 @@ const VideoCard = () => {
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
   const [error, setError] = useState(false);
+  const [userInteracted, setUserInteracted] = useState(false); // Track user interaction
 
   const videoRef = useRef(null);
 
@@ -23,7 +25,8 @@ const VideoCard = () => {
         const sanitizedVideos = videoData.map((video) => ({
           ...video,
           videoUrl: video.videoUrl
-            ? `http://localhost:5000${video.videoUrl}`
+            ? `${API_ENDPOINTS.api}${video.videoUrl}`
+            // ? `http://localhost:5000${video.videoUrl}`
             : null,
           likes: Array.isArray(video.likes) ? video.likes : [],
           comments: Array.isArray(video.comments) ? video.comments : [],
@@ -48,6 +51,7 @@ const VideoCard = () => {
     const managePlayback = async () => {
       try {
         if (isPlaying && currentVideo.videoUrl) {
+          videoElement.muted = !userInteracted; // Muted until user interaction
           await videoElement.play();
           setError(false); // Reset error state
         } else {
@@ -64,10 +68,11 @@ const VideoCard = () => {
     return () => {
       if (videoElement) videoElement.pause();
     };
-  }, [isPlaying, currentVideoIndex, currentVideo.videoUrl]);
+  }, [isPlaying, currentVideoIndex, currentVideo.videoUrl, userInteracted]);
 
   const handleVideoClick = () => {
     setIsPlaying((prevState) => !prevState);
+    setUserInteracted(true); // Mark user interaction
   };
 
   const handleNextVideo = () => {
@@ -88,26 +93,19 @@ const VideoCard = () => {
   };
 
   return (
-    <div className="video-card">
+    <div className="video-card" onClick={() => setUserInteracted(true)}>
       {/* Top Section */}
       <div className="top-section">
-        {/* <img
-          src={currentVideo.uploadedBy?.profilePicture || "./assets/pic1.jpg"}
-          // src={currentVideo.uploadedBy?.profilePicture || "./assets/pic1.jpg"}
-          alt="Profile"
-          className="profile-picture"
-        /> */}
         <img
-          src={`http://localhost:5000${
-            currentVideo.uploadedBy?.profilePicture ||
-            "./assets/pic1.jpg"
+          src={`${API_ENDPOINTS.api}${
+            currentVideo.uploadedBy?.profilePicture || "./assets/pic1.jpg"
           }`}
           alt="Profile"
           className="profile-picture"
         />
-          <span className="username">
-            {currentVideo.uploadedBy?.username || "Anonymous"}
-          </span>
+        <span className="username">
+          {currentVideo.uploadedBy?.username || "Anonymous"}
+        </span>
         <FaArrowUp
           className="navigation-icon"
           onClick={handlePreviousVideo}
@@ -122,7 +120,6 @@ const VideoCard = () => {
             ref={videoRef}
             src={currentVideo.videoUrl}
             loop
-            muted
             autoPlay
             className="video-player"
             onError={handleVideoError}

@@ -1,4 +1,5 @@
 import React, { createContext, useState } from 'react';
+import API_ENDPOINTS from '../config';
 import axios from 'axios';
 
 export const UserContext = createContext();
@@ -12,7 +13,8 @@ export const UserProvider = ({ children }) => {
   // Function to log in a user
   const login = async (email, password) => {
     try {
-      const response = await axios.post('http://localhost:5000/api/users/login', {
+      // const response = await axios.post('http://localhost:5000/api/users/login', {
+      const response = await axios.post(API_ENDPOINTS.login, {
         email,
         password,
       });
