@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { FaTrashAlt } from "react-icons/fa";
 import swal from "sweetalert";
+import API_ENDPOINTS from "../../config.js";
 import "./userPage.css";
 
 const UserPage = () => {
@@ -15,7 +16,7 @@ const UserPage = () => {
 
   // Fetch user details by ID
 
-  error && console.log(error)
+  error&&console.log(error)
   useEffect(() => {
     const fetchUser = async () => {
       const token = JSON.parse(localStorage.getItem("token")); // Retrieve the token from local storage
@@ -26,14 +27,11 @@ const UserPage = () => {
       }
 
       try {
-        const response = await axios.get(
-          `http://localhost:5000/api/users/${id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await axios.get(`${API_ENDPOINTS.fetchUserDetails}/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         setUser(response.data);
       } catch (error) {
         console.error("Failed to fetch user details:", error);
@@ -55,14 +53,11 @@ const UserPage = () => {
       }
 
       try {
-        const response = await axios.get(
-          `http://localhost:5000/api/videos/user/${id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await axios.get(`${API_ENDPOINTS.fetchUserVideos}/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         setVideos(response.data);
       } catch (error) {
         console.error("Failed to fetch user videos:", error);
@@ -94,7 +89,7 @@ const UserPage = () => {
 
     try {
       const response = await axios.put(
-        `http://localhost:5000/api/users/${id}/profilePicture`,
+        `${API_ENDPOINTS.updateUserProfilePicture}/${id}/profilePicture`,
         formData,
         {
           headers: {
@@ -107,6 +102,7 @@ const UserPage = () => {
       setUser(response.data); // Update user data with the new profile picture
     } catch (error) {
       swal("Error", "Failed to update profile picture", "error");
+      console.log(error)
     }
   };
 
@@ -122,14 +118,11 @@ const UserPage = () => {
     }).then(async (confirm) => {
       if (confirm) {
         try {
-          await axios.delete(
-            `http://localhost:5000/api/videos/${videoId}`,
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          );
+          await axios.delete(`${API_ENDPOINTS.deleteVideo}/${videoId}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
           // Update UI after deletion
           setVideos(videos.filter((video) => video._id !== videoId));
           swal({
@@ -163,9 +156,7 @@ const UserPage = () => {
             ) : (
               <div className="placeholder rounded-circle mb-2">
                 <img
-                  src={`http://localhost:5000${
-                    user?.profilePicture || "./assets/pic1.jpg"
-                  }`}
+                  src={`${user?.profilePicture || "./assets/pic.jpg"}`}
                   alt="Profile"
                   className="rounded-circle"
                   style={{ width: "120px", height: "120px" }}
@@ -209,7 +200,7 @@ const UserPage = () => {
             <div key={video._id} className="col-md-4 mb-4">
               <div className="card">
                 <video
-                  src={`http://localhost:5000${video.videoUrl}`}
+                  src={`${video.videoUrl}`}
                   controls
                   className="card-img-top"
                   style={{ height: "200px", objectFit: "cover" }}

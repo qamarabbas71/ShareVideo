@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Form, Button, Container, Row, Col, Card } from 'react-bootstrap';
 import axios from 'axios';
+import API_ENDPOINTS from '../../config';
 
 const Search = () => {
   const [query, setQuery] = useState('');
@@ -14,7 +15,7 @@ const Search = () => {
     setError(null);
 
     try {
-      const response = await axios.get(`http://localhost:5000/api/videos/search`, {
+      const response = await axios.get(`${API_ENDPOINTS.searchVideo}`, {
         params: { query },
       });
       setVideos(response.data);
@@ -55,7 +56,7 @@ const Search = () => {
             <Col key={video._id} xs={12} sm={6} md={4} lg={3} className="mb-4">
               <Card>
                 <video
-                  src={`http://localhost:5000${video.videoUrl}`}
+                  src={`${video.videoUrl}`}
                   controls
                   className="card-img-top"
                   style={{ height: '200px', objectFit: 'cover' }}

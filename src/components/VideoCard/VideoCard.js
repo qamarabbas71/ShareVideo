@@ -5,7 +5,7 @@ import Comments from "./Comments";
 import { UserContext } from "../../context/userContext.js";
 import "./VideoCard.css";
 import getVideos from "./api";
-import API_ENDPOINTS from "../../config.js";
+// import API_ENDPOINTS from "../../config.js";
 
 const VideoCard = () => {
   const { user } = useContext(UserContext);
@@ -25,8 +25,7 @@ const VideoCard = () => {
         const sanitizedVideos = videoData.map((video) => ({
           ...video,
           videoUrl: video.videoUrl
-            ? `${API_ENDPOINTS.api}${video.videoUrl}`
-            // ? `http://localhost:5000${video.videoUrl}`
+            ? `${video.videoUrl}`
             : null,
           likes: Array.isArray(video.likes) ? video.likes : [],
           comments: Array.isArray(video.comments) ? video.comments : [],
@@ -41,6 +40,7 @@ const VideoCard = () => {
   }, []);
 
   const currentVideo = videos[currentVideoIndex] || {};
+  // console.log(currentVideo.uploadedBy?.profilePicture)
 
   // Playback control
   useEffect(() => {
@@ -97,9 +97,7 @@ const VideoCard = () => {
       {/* Top Section */}
       <div className="top-section">
         <img
-          src={`${API_ENDPOINTS.api}${
-            currentVideo.uploadedBy?.profilePicture || "./assets/pic1.jpg"
-          }`}
+         src={`${currentVideo.uploadedBy?.profilePicture || './assets/pic1.jpg'}`}
           alt="Profile"
           className="profile-picture"
         />

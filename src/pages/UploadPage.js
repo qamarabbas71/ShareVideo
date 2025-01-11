@@ -4,6 +4,8 @@ import * as Yup from 'yup';
 import { Container, Row, Col, Button, Card } from 'react-bootstrap';
 import API_ENDPOINTS from '../config';
 import axios from 'axios';
+import swal from "sweetalert";
+
 
 const UploadPage = () => {
   const [videoPreview, setVideoPreview] = useState(null);
@@ -52,17 +54,18 @@ const UploadPage = () => {
     try {
       const token = JSON.parse(localStorage.getItem('token'));
       const response = await axios.post(API_ENDPOINTS.uploadVideo, formData, {
-        // const response = await axios.post('http://localhost:5000/api/videos/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${token}`, 
         },
       });
 
-      alert('Video uploaded successfully!');
+      // alert('Video uploaded successfully!');
+      swal("Success", "Video uploaded successfully...", "success");
       console.log(response.data);
     } catch (error) {
       console.error('Error uploading video:', error);
+      swal("Error", "Failed to upload video", "error");
       setUploadError('Error uploading video. Please try again.');
     } finally {
       setSubmitting(false);

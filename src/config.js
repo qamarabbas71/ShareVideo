@@ -1,6 +1,5 @@
-// src/apiConfig.js
-
 const API_BASE_URL = "http://localhost:5000";
+// const API_BASE_URL = "https://practicetiktok-cueagqgaewfbh8aj.uksouth-01.azurewebsites.net";
 
 const API_ENDPOINTS = {
   login: `${API_BASE_URL}/api/users/login`,
@@ -12,8 +11,13 @@ const API_ENDPOINTS = {
   fetchComments: `${API_BASE_URL}/api/comments/`,
   postComments: `${API_BASE_URL}/api/comments/`,
   deleteComment: `${API_BASE_URL}/api/comments/`,
+  fetchUserDetails: `${API_BASE_URL}/api/users`,
+  fetchUserVideos: `${API_BASE_URL}/api/videos/user`, 
+  updateUserProfilePicture: `${API_BASE_URL}/api/users`, 
+  deleteVideo: `${API_BASE_URL}/api/videos`, 
+  searchVideo: `${API_BASE_URL}/api/videos/search`, 
   api: `${API_BASE_URL}`,
-
 };
 
 export default API_ENDPOINTS;
+
