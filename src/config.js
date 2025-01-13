@@ -1,5 +1,5 @@
 // const API_BASE_URL = "http://localhost:5000";
-const API_BASE_URL = "https://videoapi-esgnawaah2hygean.uksouth-01.azurewebsites.net";
+const API_BASE_URL = "https://sharevideoapi-e2d6buhyecczese6.uksouth-01.azurewebsites.net";
 
 const API_ENDPOINTS = {
   login: `${API_BASE_URL}/api/users/login`,
